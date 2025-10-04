@@ -150,14 +150,34 @@ function App() {
   const totalRevenue = orders.filter(o=>o.status==="done").reduce((acc,o)=>acc+o.total,0);
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4 text-yellow-400">Canteen Cravings</h1>
+    <div className="p-4 max-w-7xl mx-auto text-white bg-gray-900 min-h-screen">
+      {/* SITE TITLE */}
+      <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-yellow-400 text-center sm:text-left">
+        Canteen Cravings
+      </h1>
 
+      {/* ADMIN LOGIN */}
       {!adminLogin && (
-        <div className="fixed top-4 right-4 p-2 bg-gray-800 rounded flex space-x-2">
-          <input placeholder="Username" value={adminUser} onChange={e=>setAdminUser(e.target.value)} className="p-1 rounded bg-gray-700"/>
-          <input placeholder="Password" type="password" value={adminPass} onChange={e=>setAdminPass(e.target.value)} className="p-1 rounded bg-gray-700"/>
-          <button onClick={handleAdminLogin} className="bg-green-600 p-1 rounded">Login</button>
+        <div className="fixed top-4 right-4 p-2 bg-gray-800 rounded flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-40 sm:w-auto">
+          <input
+            placeholder="Username"
+            value={adminUser}
+            onChange={e => setAdminUser(e.target.value)}
+            className="p-1 rounded bg-gray-700 text-sm sm:text-base"
+          />
+          <input
+            placeholder="Password"
+            type="password"
+            value={adminPass}
+            onChange={e => setAdminPass(e.target.value)}
+            className="p-1 rounded bg-gray-700 text-sm sm:text-base"
+          />
+          <button
+            onClick={handleAdminLogin}
+            className="bg-green-600 p-1 rounded text-sm sm:text-base"
+          >
+            Login
+          </button>
         </div>
       )}
 
