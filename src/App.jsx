@@ -72,7 +72,7 @@ function App() {
 
   // --- ADMIN LOGIN ---
   const handleAdminLogin = () => {
-    if(adminUser === "admin" && adminPass === "1234") setAdminLogin(true);
+    if(adminUser === "CanteenAdmin" && adminPass === "admIn555") setAdminLogin(true);
     else alert("Invalid credentials");
   };
   const handleLogout = () => {
