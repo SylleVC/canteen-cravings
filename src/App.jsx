@@ -60,6 +60,7 @@ function App() {
       timestamp: new Date()
     };
     await addDoc(collection(db, "orders"), order);
+    // Deduct stock
     cart.forEach(async item => {
       const prodRef = doc(db, "products", item.id);
       await updateDoc(prodRef, { stock: item.stock - item.quantity });
@@ -84,6 +85,7 @@ function App() {
     const orderRef = doc(db, "orders", order.id);
     await updateDoc(orderRef, { status: newStatus });
     if(newStatus === "canceled"){
+      // restore stock
       order.items.forEach(async item => {
         const prodRef = doc(db, "products", item.id);
         await updateDoc(prodRef, { stock: item.stock + item.quantity });
@@ -110,6 +112,7 @@ function App() {
     }
     setProductForm({ name:"", price:"", stock:"", image:"" });
   };
+
   const deleteProduct = async (id) => {
     if(!confirm("Delete product?")) return;
     await deleteDoc(doc(db, "products", id));
@@ -149,29 +152,29 @@ function App() {
   return (
     <div className="p-4 max-w-7xl mx-auto text-white bg-gray-900 min-h-screen">
       {/* SITE TITLE */}
-      <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-yellow-400 text-center sm:text-left break-words">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-yellow-400 text-center sm:text-left">
         Canteen Cravings
       </h1>
 
       {/* ADMIN LOGIN */}
       {!adminLogin && (
-        <div className="fixed top-4 right-4 p-2 bg-gray-800 rounded flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-36 sm:w-auto z-50">
+        <div className="fixed top-20 sm:top-4 right-4 p-2 bg-gray-800 rounded flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-40 sm:w-auto z-50">
           <input
             placeholder="Username"
             value={adminUser}
             onChange={e => setAdminUser(e.target.value)}
-            className="p-1 rounded bg-gray-700 text-xs sm:text-base"
+            className="p-1 rounded bg-gray-700 text-sm sm:text-base"
           />
           <input
             placeholder="Password"
             type="password"
             value={adminPass}
             onChange={e => setAdminPass(e.target.value)}
-            className="p-1 rounded bg-gray-700 text-xs sm:text-base"
+            className="p-1 rounded bg-gray-700 text-sm sm:text-base"
           />
           <button
             onClick={handleAdminLogin}
-            className="bg-green-600 p-1 rounded text-xs sm:text-base"
+            className="bg-green-600 p-1 rounded text-sm sm:text-base"
           >
             Login
           </button>
@@ -180,13 +183,105 @@ function App() {
 
       {adminLogin ? (
         <div>
-          {/* Admin Panel */}
-          {/* ... (same as previous full admin panel code) */}
+          <div className="flex justify-between mb-4">
+            <h2 className="text-xl font-bold">Admin Panel</h2>
+            <button onClick={handleLogout} className="bg-red-600 p-1 rounded">Logout</button>
+          </div>
+
+          {/* Seller GCash */}
+          <div className="mb-4">
+            <label>Seller GCash Number: </label>
+            <input value={gcashNumber} onChange={e=>setGcashNumber(e.target.value)} className="p-1 rounded bg-gray-700"/>
+          </div>
+
+          {/* Products */}
+          <div className="mb-4 border p-2 rounded bg-gray-800">
+            <h3 className="font-bold mb-2">{editingProduct ? "Edit Product" : "Add Product"}</h3>
+            <input placeholder="Name" value={productForm.name} onChange={e=>setProductForm({...productForm,name:e.target.value})} className="p-1 m-1 rounded w-full"/>
+            <input placeholder="Price" type="number" value={productForm.price} onChange={e=>setProductForm({...productForm,price:Number(e.target.value)})} className="p-1 m-1 rounded w-full"/>
+            <input placeholder="Stock" type="number" value={productForm.stock} onChange={e=>setProductForm({...productForm,stock:Number(e.target.value)})} className="p-1 m-1 rounded w-full"/>
+            <input type="file" onChange={handleImageUpload} className="p-1 m-1 w-full text-white"/>
+            {productForm.image && <img src={productForm.image} alt="preview" className="h-24 mb-2"/>}
+            <button onClick={handleProductSubmit} className="bg-blue-600 p-1 rounded mt-2">{editingProduct?"Update":"Add"}</button>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            {products.map(p => (
+              <div key={p.id} className="border p-2 rounded bg-gray-700">
+                <img src={p.image} className="h-24 w-full object-cover mb-2"/>
+                <h4 className="font-bold">{p.name}</h4>
+                <p>Price: ₱{p.price}</p>
+                <p>Stock: {p.stock}</p>
+                <div className="flex space-x-1 mt-1">
+                  <button onClick={()=>{setEditingProduct(p); setProductForm(p)}} className="bg-yellow-500 p-1 rounded">Edit</button>
+                  <button onClick={()=>deleteProduct(p.id)} className="bg-red-600 p-1 rounded">Delete</button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Orders */}
+          <h3 className="text-xl font-bold mb-2">Orders</h3>
+          <p className="font-bold mb-2">Total Revenue: ₱{totalRevenue}</p>
+          <div className="grid gap-2">
+            {orders.map(o => (
+              <div key={o.id} className="border p-2 rounded bg-gray-700">
+                <p><b>Buyer:</b> {o.buyerName}</p>
+                <p><b>Contact:</b> {o.contact}</p>
+                <p><b>Payment:</b> {o.paymentMethod}</p>
+                <p><b>Total:</b> ₱{o.total}</p>
+                <p><b>Status:</b> {o.status}</p>
+                <div className="flex space-x-1 mt-1">
+                  {o.status === "pending" && <button onClick={()=>updateOrderStatus(o,"done")} className="bg-green-600 p-1 rounded">Done</button>}
+                  {o.status !== "canceled" && <button onClick={()=>updateOrderStatus(o,"canceled")} className="bg-red-600 p-1 rounded">Cancel</button>}
+                  <button onClick={()=>deleteOrder(o.id)} className="bg-gray-500 p-1 rounded">Delete</button>
+                  <button onClick={()=>printReceipt(o)} className="bg-blue-600 p-1 rounded">Print Receipt</button>
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
       ) : (
         // BUYER VIEW
         <div>
-          {/* Menu, Cart, Buyer Info (same as previous full code) */}
+          <h2 className="text-xl font-bold mb-2">Menu</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            {products.map(p => (
+              <div key={p.id} className="border p-2 rounded bg-gray-800">
+                <img src={p.image} className="h-24 w-full object-cover mb-2"/>
+                <h4 className="font-bold">{p.name}</h4>
+                <p>Price: ₱{p.price}</p>
+                <p>Stock: {p.stock}</p>
+                <button onClick={()=>addToCart(p)} className="bg-blue-600 p-1 rounded mt-2">Add to Cart</button>
+              </div>
+            ))}
+          </div>
+
+          {/* Cart */}
+          <div className="mb-4 border p-2 rounded bg-gray-800">
+            <h3 className="font-bold mb-2">Your Cart</h3>
+            {cart.map(c => (
+              <div key={c.id} className="flex justify-between mb-1">
+                <span>{c.name} x {c.quantity}</span>
+                <span>₱{c.price*c.quantity}</span>
+                <button onClick={()=>removeFromCart(c.id)} className="bg-red-600 p-1 rounded">Remove</button>
+              </div>
+            ))}
+            <p className="font-bold mt-2">Total: ₱{cartTotal}</p>
+          </div>
+
+          {/* Buyer Info */}
+          <div className="mb-4 border p-2 rounded bg-gray-800">
+            <input placeholder="Your Name" className="p-1 m-1 w-full" value={buyerName} onChange={e=>setBuyerName(e.target.value)} />
+            <input placeholder="Contact Number" className="p-1 m-1 w-full" value={contact} onChange={e=>setContact(e.target.value)} />
+            <select className="p-1 m-1 w-full" value={paymentMethod} onChange={e=>setPaymentMethod(e.target.value)}>
+              <option>GCash</option>
+              <option>At the counter</option>
+            </select>
+            {paymentMethod === "GCash" && <p>Pay to seller number: {gcashNumber}</p>}
+            <button onClick={placeOrder} className="bg-green-600 p-2 rounded mt-2 w-full">Place Order & Print Receipt</button>
+          </div>
         </div>
       )}
     </div>
