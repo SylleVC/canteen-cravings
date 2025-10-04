@@ -2,17 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global Styles */
 body {
   background-color: #1e1e2f;
   color: white;
   font-family: 'Arial', sans-serif;
-  padding-top: 2.5rem; /* extra top padding for mobile to prevent overlap */
+  margin: 0;
+  padding: 0;
 }
 
+/* Buttons */
 button {
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+button:hover {
+  opacity: 0.9;
 }
 
+/* Inputs, Selects, Textareas */
 input, select, textarea {
   background-color: #2a2a3d;
   color: white;
@@ -20,12 +28,43 @@ input, select, textarea {
   border-radius: 5px;
 }
 
-/* Additional mobile spacing for site title and admin login */
+/* Admin Login Panel on Mobile */
 @media (max-width: 640px) {
-  h1 {
-    margin-bottom: 3rem; /* push content down on mobile */
-  }
-  .fixed.top-20 {
-    top: 6rem; /* move admin login further down if needed */
+  .admin-login-panel {
+    top: 20px !important;
+    right: 50%;
+    transform: translateX(50%);
+    width: 90% !important;
+    flex-direction: column !important;
+    gap: 8px;
   }
 }
+
+/* Admin Panel Buttons Wrap */
+.admin-order-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* Images */
+img {
+  object-fit: cover;
+}
+
+/* Grid spacing */
+.grid > * {
+  min-width: 0; /* Prevent overflowing on small screens */
+}
+
+/* Cart / Buyer Info */
+.cart, .buyer-info {
+  word-break: break-word;
+}
+
+/* Typography adjustments */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  word-break: break-word;
+}
+

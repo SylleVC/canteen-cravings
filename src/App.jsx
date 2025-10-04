@@ -150,7 +150,8 @@ function App() {
   const totalRevenue = orders.filter(o=>o.status==="done").reduce((acc,o)=>acc+o.total,0);
 
   return (
-    <div className="p-4 max-w-7xl mx-auto text-white bg-gray-900 min-h-screen">
+    <div className={`p-4 max-w-7xl mx-auto text-white bg-gray-900 min-h-screen 
+                     ${!adminLogin ? "pt-32 sm:pt-4" : ""}`}>
       {/* SITE TITLE */}
       <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-yellow-400 text-center sm:text-left">
         Canteen Cravings
@@ -158,7 +159,7 @@ function App() {
 
       {/* ADMIN LOGIN */}
       {!adminLogin && (
-        <div className="fixed top-20 sm:top-4 right-4 p-2 bg-gray-800 rounded flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-40 sm:w-auto z-50">
+        <div className="fixed top-4 sm:top-4 right-4 p-2 bg-gray-800 rounded flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-40 sm:w-auto z-50">
           <input
             placeholder="Username"
             value={adminUser}
@@ -183,9 +184,9 @@ function App() {
 
       {adminLogin ? (
         <div>
-          <div className="flex justify-between mb-4">
+          <div className="flex flex-col sm:flex-row justify-between mb-4">
             <h2 className="text-xl font-bold">Admin Panel</h2>
-            <button onClick={handleLogout} className="bg-red-600 p-1 rounded">Logout</button>
+            <button onClick={handleLogout} className="bg-red-600 p-1 rounded mt-2 sm:mt-0">Logout</button>
           </div>
 
           {/* Seller GCash */}
@@ -231,7 +232,7 @@ function App() {
                 <p><b>Payment:</b> {o.paymentMethod}</p>
                 <p><b>Total:</b> ₱{o.total}</p>
                 <p><b>Status:</b> {o.status}</p>
-                <div className="flex space-x-1 mt-1">
+                <div className="flex space-x-1 mt-1 flex-wrap">
                   {o.status === "pending" && <button onClick={()=>updateOrderStatus(o,"done")} className="bg-green-600 p-1 rounded">Done</button>}
                   {o.status !== "canceled" && <button onClick={()=>updateOrderStatus(o,"canceled")} className="bg-red-600 p-1 rounded">Cancel</button>}
                   <button onClick={()=>deleteOrder(o.id)} className="bg-gray-500 p-1 rounded">Delete</button>
@@ -253,7 +254,7 @@ function App() {
                 <h4 className="font-bold">{p.name}</h4>
                 <p>Price: ₱{p.price}</p>
                 <p>Stock: {p.stock}</p>
-                <button onClick={()=>addToCart(p)} className="bg-blue-600 p-1 rounded mt-2">Add to Cart</button>
+                <button onClick={()=>addToCart(p)} className="bg-blue-600 p-1 rounded mt-2 w-full">Add to Cart</button>
               </div>
             ))}
           </div>
