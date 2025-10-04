@@ -2,27 +2,21 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
     extend: {
-      spacing: {
-        '18': '4.5rem', // for consistent top spacing on mobile
-        '22': '5.5rem', // additional spacing if needed
-      },
-      zIndex: {
-        '50': '50', // ensures admin login stays on top
-        '60': '60',
-      },
       colors: {
-        dark-bg: '#1e1e2f',
-        mid-gray: '#2a2a3d',
-        light-yellow: '#facc15', // matches your text-yellow-400
-      },
-      screens: {
-        'xs': '400px', // optional extra small breakpoint
+        gray900: "#1e1e2f",
+        gray800: "#2a2a3d",
+        gray700: "#374151",
+        gray500: "#6b7280",
+        yellow400: "#facc15",
+        green600: "#16a34a",
+        red600: "#dc2626",
+        blue600: "#2563eb",
       },
     },
   },
   plugins: [],
-}
+};
