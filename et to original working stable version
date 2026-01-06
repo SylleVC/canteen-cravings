@@ -1,0 +1,10 @@
+[33m4e0d947[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m Finalizing Pogi Cravings for redeploy
+[33meadfe8b[m Reverting back to Canteen Cravings stable version
+[33m97d9388[m Renamed site to Pogi Cravings and updated receipt
+[33m6fce1a8[m Restoring Original working version
+[33m208f74c[m Add files via upload
+[33m924c6e3[m Delete vite.config.js
+[33m2354437[m Delete tailwind.config.js
+[33m6f2c459[m Delete postcss.config.js
+[33m59f9449[m Delete package.json
+[33m6584b6e[m Delete package-lock.json
