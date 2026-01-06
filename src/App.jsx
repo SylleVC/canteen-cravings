@@ -14,7 +14,7 @@ function App() {
   const [adminLogin, setAdminLogin] = useState(false);
   const [adminUser, setAdminUser] = useState("");
   const [adminPass, setAdminPass] = useState("");
-  const [gcashNumber, setGcashNumber] = useState("09560385517");
+  const [gcashNumber, setGcashNumber] = useState("09123456789");
   const [editingProduct, setEditingProduct] = useState(null);
   const [productForm, setProductForm] = useState({ name:"", price:"", stock:"", image:"" });
   const receiptRef = useRef();
@@ -132,7 +132,7 @@ function App() {
   // --- PRINT RECEIPT ---
   const printReceipt = (order) => {
     const receiptWindow = window.open('', 'Print Receipt', 'width=400,height=600');
-    receiptWindow.document.write(`<h2>Pogi Cravings</h2>`);
+    receiptWindow.document.write(`<h2>Canteen Cravings</h2>`);
     receiptWindow.document.write(`<p>Buyer: ${order.buyerName}</p>`);
     receiptWindow.document.write(`<p>Contact: ${order.contact}</p>`);
     receiptWindow.document.write(`<p>Payment: ${order.paymentMethod}</p>`);
@@ -154,7 +154,7 @@ function App() {
                      ${!adminLogin ? "pt-32 sm:pt-4" : ""}`}>
       {/* SITE TITLE */}
       <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-yellow-400 text-center sm:text-left">
-        Pogi Cravings
+        Canteen Cravings
       </h1>
 
       {/* ADMIN LOGIN */}
