@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #1e1e2f;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  padding-top: 2.5rem; /* extra top padding for mobile to prevent overlap */
+}
+
+button {
+  cursor: pointer;
+}
+
+input, select, textarea {
+  background-color: #2a2a3d;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 5px;
+}
+
+/* Additional mobile spacing for site title and admin login */
+@media (max-width: 640px) {
+  h1 {
+    margin-bottom: 3rem; /* push content down on mobile */
+  }
+  .fixed.top-20 {
+    top: 6rem; /* move admin login further down if needed */
+  }
+}
