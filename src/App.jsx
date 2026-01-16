@@ -14,7 +14,6 @@ function App() {
   const [adminLogin, setAdminLogin] = useState(false);
   const [adminUser, setAdminUser] = useState("");
   const [adminPass, setAdminPass] = useState("");
-  const [gcashNumber, setGcashNumber] = useState("09560385517");
   const [editingProduct, setEditingProduct] = useState(null);
   const [productForm, setProductForm] = useState({ name:"", price:"", stock:"", image:"" });
   const receiptRef = useRef();
@@ -135,7 +134,7 @@ function App() {
     receiptWindow.document.write(`<h2>Canteen Cravings</h2>`);
     receiptWindow.document.write(`<p>Buyer: ${order.buyerName}</p>`);
     receiptWindow.document.write(`<p>Contact: ${order.contact}</p>`);
-    receiptWindow.document.write(`<p>Payment: ${order.paymentMethod}</p>`);
+    receiptWindow.document.write(`<p>Payment: At the counter</p>`);
     receiptWindow.document.write('<hr/>');
     order.items.forEach(i => {
       receiptWindow.document.write(`<p>${i.name} x ${i.quantity} - ₱${i.price * i.quantity}</p>`);
@@ -187,12 +186,6 @@ function App() {
           <div className="flex flex-col sm:flex-row justify-between mb-4">
             <h2 className="text-xl font-bold">Admin Panel</h2>
             <button onClick={handleLogout} className="bg-red-600 p-1 rounded mt-2 sm:mt-0">Logout</button>
-          </div>
-
-          {/* Seller GCash */}
-          <div className="mb-4">
-            <label>Seller GCash Number: </label>
-            <input value={gcashNumber} onChange={e=>setGcashNumber(e.target.value)} className="p-1 rounded bg-gray-700"/>
           </div>
 
           {/* Products */}
@@ -276,11 +269,7 @@ function App() {
           <div className="mb-4 border p-2 rounded bg-gray-800">
             <input placeholder="Your Name" className="p-1 m-1 w-full" value={buyerName} onChange={e=>setBuyerName(e.target.value)} />
             <input placeholder="Contact Number" className="p-1 m-1 w-full" value={contact} onChange={e=>setContact(e.target.value)} />
-            <select className="p-1 m-1 w-full" value={paymentMethod} onChange={e=>setPaymentMethod(e.target.value)}>
-              <option>GCash</option>
-              <option>At the counter</option>
-            </select>
-            {paymentMethod === "GCash" && <p>Pay to seller number: {gcashNumber}</p>}
+            <div className="p-2 text-yellow-400 font-bold">Payment Method: At the Counter</div>
             <button onClick={placeOrder} className="bg-green-600 p-2 rounded mt-2 w-full">Place Order & Print Receipt</button>
           </div>
         </div>
