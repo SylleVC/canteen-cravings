@@ -133,7 +133,7 @@ function App() {
     const receiptWindow = window.open('', 'Print Receipt', 'width=400,height=600');
     receiptWindow.document.write(`<h2>Canteen Cravings</h2>`);
     receiptWindow.document.write(`<p>Buyer: ${order.buyerName}</p>`);
-    receiptWindow.document.write(`<p>Contact: ${order.contact}</p>`);
+    receiptWindow.document.write(`<p>School Email: ${order.contact}</p>`);
     receiptWindow.document.write(`<p>Payment: At the counter</p>`);
     receiptWindow.document.write('<hr/>');
     order.items.forEach(i => {
@@ -221,7 +221,7 @@ function App() {
             {orders.map(o => (
               <div key={o.id} className="border p-2 rounded bg-gray-700">
                 <p><b>Buyer:</b> {o.buyerName}</p>
-                <p><b>Contact:</b> {o.contact}</p>
+                <p><b>School Email:</b> {o.contact}</p>
                 <p><b>Payment:</b> {o.paymentMethod}</p>
                 <p><b>Total:</b> ₱{o.total}</p>
                 <p><b>Status:</b> {o.status}</p>
@@ -268,7 +268,7 @@ function App() {
           {/* Buyer Info */}
           <div className="mb-4 border p-2 rounded bg-gray-800">
             <input placeholder="Your Name" className="p-1 m-1 w-full" value={buyerName} onChange={e=>setBuyerName(e.target.value)} />
-            <input placeholder="Contact Number" className="p-1 m-1 w-full" value={contact} onChange={e=>setContact(e.target.value)} />
+            <input placeholder="School Email" className="p-1 m-1 w-full" value={contact} onChange={e=>setContact(e.target.value)} />
             <div className="p-2 text-yellow-400 font-bold">Payment Method: At the Counter</div>
             <button onClick={placeOrder} className="bg-green-600 p-2 rounded mt-2 w-full">Place Order & Print Receipt</button>
           </div>
